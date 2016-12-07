@@ -13,6 +13,13 @@ maxSaturation = .7
 def displayBinaryImage(image):
     plt.imshow(1-image, cmap = 'gray')
 
+def smoothBinaryImage(image):
+    kernel = np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]])
+    iterations = 15
+
+    smoothed = morphology.binary_closing(binary, kernel ,iterations=iterations)
+    return smoothed
+
 img = misc.imread("tardis.jpg")
 hsv = color.rgb2hsv(img)
 
@@ -24,7 +31,7 @@ binary[hsv[:,:,0] > maxHue] = 0
 binary[hsv[:,:,1] < minSaturation] = 0
 binary[hsv[:,:,1] > maxSaturation] = 0
 
-smoothed = morphology.binary_closing(binary, np.ones((5,5)),iterations=5)
+smoothed = smoothBinaryImage(binary)
 
 labels, nbr_objects = measurements.label(smoothed)
 print "Number of objects:", nbr_objects
