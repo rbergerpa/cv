@@ -3,6 +3,7 @@ import numpy as np
 from scipy import misc
 from skimage import color
 import matplotlib.pyplot as plt
+from scipy.ndimage import measurements,morphology
 
 minHue = .5
 maxHue = .6
@@ -23,11 +24,16 @@ binary[hsv[:,:,0] > maxHue] = 0
 binary[hsv[:,:,1] < minSaturation] = 0
 binary[hsv[:,:,1] > maxSaturation] = 0
 
+smoothed = morphology.binary_closing(binary, np.ones((5,5)),iterations=5)
+
 plt.subplot(2,2,1)
 plt.imshow(img)
 
 plt.subplot(2,2,2)
 displayBinaryImage(binary)
+
+plt.subplot(2,2,3)
+displayBinaryImage(smoothed)
 
 plt.show()
 
