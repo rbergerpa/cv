@@ -20,6 +20,28 @@ def smoothBinaryImage(image):
     smoothed = morphology.binary_closing(binary, kernel ,iterations=iterations)
     return smoothed
 
+# Returns (x1, y1, x2, y2)
+def findLargestObject(binaryImage):
+    labels, nbr_objects = measurements.label(binaryImage)
+    print "Number of objects:", nbr_objects
+    objects = measurements.find_objects(labels)
+
+    maxArea = 0
+    largestObject = ()
+
+    for o in objects:
+        x1 = o[1].start
+        x2 = o[1].stop
+        y1 = o[0].start
+        y2 = o[0].stop
+        area = (x2-x1+1)*(y2-y1+1)
+
+        if area > maxArea:
+            maxArea = area
+            largestObject = o
+
+    return (largestObject[1].start, largestObject[0].start, largestObject[1].stop, largestObject[0].stop)
+
 img = misc.imread("tardis.jpg")
 hsv = color.rgb2hsv(img)
 
@@ -33,29 +55,7 @@ binary[hsv[:,:,1] > maxSaturation] = 0
 
 smoothed = smoothBinaryImage(binary)
 
-labels, nbr_objects = measurements.label(smoothed)
-print "Number of objects:", nbr_objects
-objects = measurements.find_objects(labels)
-
-maxArea = 0
-maxAreaX1 = 0
-maxAreaX2 = 0
-maxAreaY1 = 0
-maxAreaY2 = 0
-
-for o in objects:
-    x1 = o[1].start
-    x2 = o[1].stop
-    y1 = o[0].start
-    y2 = o[0].stop
-    area = (x2-x1+1)*(y2-y1+1)
-
-    if area > maxArea:
-        maxArea = area
-        maxAreaX1 = x1
-        maxAreaX2 = x2
-        maxAreaY1 = y1
-        maxAreaY2 = y2
+object = findLargestObject(smoothed)
 
 plt.figure(figsize=(10,8))
 
@@ -75,9 +75,11 @@ plt.subplot(2,2,4)
 plt.axis([0, img.shape[1], img.shape[0], 0])
 plt.axis('off')
 plt.imshow(img)
-plt.plot([maxAreaX1, maxAreaX2], [maxAreaY1, maxAreaY1], color='red')
-plt.plot([maxAreaX1, maxAreaX2], [maxAreaY2, maxAreaY2], color='red')
-plt.plot([maxAreaX1, maxAreaX1], [maxAreaY1, maxAreaY2], color='red')
-plt.plot([maxAreaX2, maxAreaX2], [maxAreaY1, maxAreaY2], color='red')
+
+(x1, y1, x2, y2) = object
+plt.plot((x1, x2), (y1, y1), color='red')
+plt.plot((x1, x2), (y2, y2), color='red')
+plt.plot((x1, x1), (y1, y2), color='red')
+plt.plot((x2, x2), (y1, y2), color='red')
 
 plt.show()
