@@ -51,16 +51,20 @@ for o in objects:
         maxAreaY2 = y2
 
 plt.subplot(2,2,1)
+plt.axis('off')
 plt.imshow(img)
 
 plt.subplot(2,2,2)
+plt.axis('off')
 displayBinaryImage(binary)
 
 plt.subplot(2,2,3)
+plt.axis('off')
 displayBinaryImage(smoothed)
 
 plt.subplot(2,2,4)
 plt.axis([0, img.shape[1], img.shape[0], 0])
+plt.axis('off')
 plt.imshow(img)
 plt.plot([maxAreaX1, maxAreaX2], [maxAreaY1, maxAreaY1], color='red')
 plt.plot([maxAreaX1, maxAreaX2], [maxAreaY2, maxAreaY2], color='red')
