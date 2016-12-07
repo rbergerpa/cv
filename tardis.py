@@ -26,6 +26,30 @@ binary[hsv[:,:,1] > maxSaturation] = 0
 
 smoothed = morphology.binary_closing(binary, np.ones((5,5)),iterations=5)
 
+labels, nbr_objects = measurements.label(smoothed)
+print "Number of objects:", nbr_objects
+objects = measurements.find_objects(labels)
+
+maxArea = 0
+maxAreaX1 = 0
+maxAreaX2 = 0
+maxAreaY1 = 0
+maxAreaY2 = 0
+
+for o in objects:
+    x1 = o[1].start
+    x2 = o[1].stop
+    y1 = o[0].start
+    y2 = o[0].stop
+    area = (x2-x1+1)*(y2-y1+1)
+
+    if area > maxArea:
+        maxArea = area
+        maxAreaX1 = x1
+        maxAreaX2 = x2
+        maxAreaY1 = y1
+        maxAreaY2 = y2
+
 plt.subplot(2,2,1)
 plt.imshow(img)
 
@@ -35,5 +59,11 @@ displayBinaryImage(binary)
 plt.subplot(2,2,3)
 displayBinaryImage(smoothed)
 
+plt.subplot(2,2,4)
+plt.axis([0, img.shape[1], img.shape[0], 0])
+plt.imshow(img)
+plt.plot([maxAreaX1, maxAreaX2], [maxAreaY1, maxAreaY1], color='red')
+plt.plot([maxAreaX1, maxAreaX2], [maxAreaY2, maxAreaY2], color='red')
+plt.plot([maxAreaX1, maxAreaX1], [maxAreaY1, maxAreaY2], color='red')
+plt.plot([maxAreaX2, maxAreaX2], [maxAreaY1, maxAreaY2], color='red')
 plt.show()
-
