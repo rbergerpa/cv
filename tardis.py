@@ -57,6 +57,8 @@ for o in objects:
         maxAreaY1 = y1
         maxAreaY2 = y2
 
+plt.figure(figsize=(10,8))
+
 plt.subplot(2,2,1)
 plt.axis('off')
 plt.imshow(img)
@@ -77,4 +79,5 @@ plt.plot([maxAreaX1, maxAreaX2], [maxAreaY1, maxAreaY1], color='red')
 plt.plot([maxAreaX1, maxAreaX2], [maxAreaY2, maxAreaY2], color='red')
 plt.plot([maxAreaX1, maxAreaX1], [maxAreaY1, maxAreaY2], color='red')
 plt.plot([maxAreaX2, maxAreaX2], [maxAreaY1, maxAreaY2], color='red')
+
 plt.show()
