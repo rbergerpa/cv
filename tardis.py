@@ -1,9 +1,10 @@
 import sys
 import numpy as np
-from scipy import misc
 from skimage import color
-import matplotlib.pyplot as plt
+from scipy import misc
+from scipy import ndimage
 from scipy.ndimage import measurements,morphology
+import matplotlib.pyplot as plt
 
 minHue = .5
 maxHue = .6
@@ -14,7 +15,7 @@ def displayBinaryImage(image):
     plt.imshow(1-image, cmap = 'gray')
 
 def smoothBinaryImage(image):
-    kernel = np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]])
+    kernel = ndimage.generate_binary_structure(2,1).astype(np.int)
     iterations = 15
 
     smoothed = morphology.binary_closing(binary, kernel ,iterations=iterations)
