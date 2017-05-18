@@ -6,10 +6,10 @@ from scipy import ndimage
 from scipy.ndimage import measurements,morphology
 import matplotlib.pyplot as plt
 
-minHue = .5
-maxHue = .6
-minSaturation = .6
-maxSaturation = .7
+minU = 0.1
+maxU = 0.5
+minV = -0.5
+maxV = 0.0
 
 def displayBinaryImage(image):
     plt.imshow(1-image, cmap = 'gray')
@@ -45,14 +45,15 @@ def findLargestObject(binaryImage):
 
 img = misc.imread("tardis.jpg")
 hsv = color.rgb2hsv(img)
+yuv = color.rgb2yuv(img)
 
 binary = np.ones((img.shape[0], img.shape[1]), dtype='uint8')
 
-binary[hsv[:,:,0] < minHue] = 0
-binary[hsv[:,:,0] > maxHue] = 0
+binary[yuv[:,:,1] < minU] = 0
+binary[yuv[:,:,1] > maxU] = 0
 
-binary[hsv[:,:,1] < minSaturation] = 0
-binary[hsv[:,:,1] > maxSaturation] = 0
+binary[yuv[:,:,2] < minV] = 0
+binary[yuv[:,:,2] > maxV] = 0
 
 smoothed = smoothBinaryImage(binary)
 
