@@ -5,6 +5,7 @@ from scipy import misc
 from scipy import ndimage
 from scipy.ndimage import measurements,morphology
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 minU = 0.1
 maxU = 0.5
@@ -79,9 +80,6 @@ plt.axis('off')
 plt.imshow(img)
 
 (x1, y1, x2, y2) = object
-plt.plot((x1, x2), (y1, y1), color='red')
-plt.plot((x1, x2), (y2, y2), color='red')
-plt.plot((x1, x1), (y1, y2), color='red')
-plt.plot((x2, x2), (y1, y2), color='red')
+plt.gca().add_patch(Rectangle((x1,y1), x2-x1, y2-y1, color='red', fill=False))
 
 plt.show()
