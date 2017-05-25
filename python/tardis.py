@@ -44,7 +44,7 @@ def findLargestObject(binaryImage):
 
     return (largestObject[1].start, largestObject[0].start, largestObject[1].stop, largestObject[0].stop)
 
-img = misc.imread("tardis.jpg")
+img = misc.imread("../tardis.jpg")
 hsv = color.rgb2hsv(img)
 yuv = color.rgb2yuv(img)
 
@@ -82,4 +82,4 @@ plt.imshow(img)
 (x1, y1, x2, y2) = object
 plt.gca().add_patch(Rectangle((x1,y1), x2-x1, y2-y1, color='red', fill=False))
 
-plt.show()
+plt.show(block=False)
